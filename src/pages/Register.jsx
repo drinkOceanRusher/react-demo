@@ -1,25 +1,29 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {Link} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 import loginImg from '../assets/logo.png'
-import RegisterApi from '../request/api'
+import {RegisterApi} from '../request/api.js'
 import '../assets/login.less';
 
 export default function Register() {
 
+const  navigat = useNavigate() 
   const onFinish = (values) => {
     console.log('Success:', values);
     RegisterApi({
       username:values.username,
       Password:values.Password
     }).then((res)=>{
-      if(res.errorcode === 0) {
-
+      if(res.errCode === 0) {
+        message.success('注册成功，即将跳转登录页');
+       setTimeout(()=>{
+         navigat('/login')
+       },5000)
       }else{
 
       }
-    }))
+    })
 
   };
   const onFinishFailed = (errorInfo) => {
