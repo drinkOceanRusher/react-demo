@@ -13,7 +13,7 @@ const  navigat = useNavigate()
     console.log('Success:', values);
     RegisterApi({
       username:values.username,
-      Password:values.Password
+      password:values.password
     }).then((res)=>{
       if(res.errCode === 0) {
         message.success('注册成功，即将跳转登录页');

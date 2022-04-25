@@ -1,18 +1,39 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {Link} from 'react-router-dom';
-import loginImg from '../assets/logo.png'
+import {Link, useNavigate} from 'react-router-dom';
+import loginImg from '../assets/logo.png';
+import {LoginApi} from '../request/api.js';
 
 import '../assets/login.less';
 
 export default function Login() {
 
+  const navigate = useNavigate();
   const onFinish = (values) => {
     console.log('Success:', values);
+    LoginApi({
+      username:values.username,
+      password:values.password
+    }).then((res)=>{
+      console.log(res);
+      if(res.errCode===0) {
+        localStorage.setItem('avatar', res.data.avatar)
+        localStorage.setItem('cms-token', res.data['cms-token'])
+        localStorage.setItem('editable', res.data.editable)
+        localStorage.setItem('player', res.data.player)
+        localStorage.setItem('username', res.data.username)
+        setTimeout(()=>{
+            navigate('/');
+        },1000)
+      }else{
+        message.error('登录失败')
+      }
+    })
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
+
   };
 
   return (
